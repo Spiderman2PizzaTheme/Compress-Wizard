@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import os.path
+import subprocess
 from pathlib import Path
 from PIL import Image
 from PIL import GifImagePlugin
@@ -111,6 +112,7 @@ while True:
         cwd = os.getcwd()
         playsound('success.wav')
         sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
+        subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
         
     if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'JPEG':
         #window["-TOUT-"].update("This worked")
@@ -136,7 +138,8 @@ while True:
         cwd = os.getcwd()
         playsound('success.wav')
         sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
-                
+        subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
+
     if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'DeepFried':
         #window["-TOUT-"].update("This worked")
         im = Image.open(filename)
@@ -161,5 +164,6 @@ while True:
         cwd = os.getcwd()
         playsound('success.wav')
         sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
+        subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
         
 window.close()
