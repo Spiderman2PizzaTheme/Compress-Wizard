@@ -139,7 +139,7 @@ while True:
         sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
         subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
 
-    if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'DeepFried':
+    if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'Deep Fried':
         #window["-TOUT-"].update("This worked")
         im = Image.open(filename)
         rgb_im = im.convert('RGB')
