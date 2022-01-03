@@ -1,4 +1,4 @@
-This program does not require Python to be installed. However, i f you wish to compile your own version and not run the pre-compiled .exe, you will need to install Python and Pyinstaller. p
+This program does not require Python to be installed. The .exe file can be run standalone. However if you wish to compile your own version and not run the pre-compiled .exe you will need to install Python and Pyinstaller.
 
 Please do the following if you wish to compile yourself:
 
