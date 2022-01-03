@@ -20,7 +20,7 @@ image_viewer_column = [
     [sg.Text("Choose an image from the list on the left.")],
     [sg.Text(size=(40,1), key="-TOUT-")], #Return debug text field
     [sg.Text("Convert to...")],
-    [sg.Combo(('PNG', 'JPEG', 'DeepFried'), enable_events=True, key="-CONVERTCHOICE-", size=(20, 1)),],
+    [sg.Combo(('PNG', 'JPEG', 'Compress for Discord', 'Deep Fried'), enable_events=True, key="-CONVERTCHOICE-", size=(20, 1)),],
     [sg.Button("CONVERT", key="-CONVERTERBUTTON-", disabled=True)],
     #[sg.Button('CONVERT', key="-CONVERTER-", disabled=True)],
 ]
@@ -45,16 +45,15 @@ window.TKroot.maxsize(halfSizeX,halfSizeY)
 #---------------LOGIC---------------
 
 # Event loop
-while True:
-
-    #DEBUG TEXT
+while True:    
     event, values = window.read()
-    choice = "choice"
-    if choice == "choice":
-        try:
-            window["-TOUT-"].update(values["-CONVERTCHOICE-"])
-        except:
-            pass
+    #DEBUG TEXT
+    #choice = "choice"
+    #if choice == "choice":
+    #    try:
+    #        window["-TOUT-"].update(values["-CONVERTCHOICE-"])
+    #    except:
+    #        pass
     #END DEBUG TEXT
 
     if event == "Exit" or event == sg.WIN_CLOSED:
@@ -92,7 +91,7 @@ while True:
         #window["-TOUT-"].update("This worked")
         im = Image.open(filename)
         rgb_im = im.convert('RGB')     
-        rgb_im.save("newPNG.png")
+        rgb_im.save("NewPNG.png")
         
         folder = values["-FOLDER-"]
         try:
@@ -118,7 +117,7 @@ while True:
         #window["-TOUT-"].update("This worked")
         im = Image.open(filename)
         rgb_im = im.convert('RGB')
-        rgb_im.save("newJPEG.jpg", quality=95)
+        rgb_im.save("NewJPEG.jpg", quality=95)
         
         folder = values["-FOLDER-"]
         try:
@@ -145,6 +144,32 @@ while True:
         im = Image.open(filename)
         rgb_im = im.convert('RGB')
         rgb_im.save("DeepFried.jpg", quality=3)
+        
+        folder = values["-FOLDER-"]
+        try:
+            #get list of files in folder
+            file_list = os.listdir(folder)
+        except:
+            file_list = []
+            
+        fnames = [
+            f
+            for f in file_list
+            if os.path.isfile(os.path.join(folder, f))
+            and f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
+        ]
+        window["-FILE LIST-"].update(fnames)
+        
+        cwd = os.getcwd()
+        playsound('success.wav')
+        sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
+        subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
+        
+    if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'Compress for Discord':
+        #window["-TOUT-"].update("This worked")
+        im = Image.open(filename)
+        rgb_im = im.convert('RGB')
+        rgb_im.save("DiscordCompressed.jpg", quality=25)
         
         folder = values["-FOLDER-"]
         try:
