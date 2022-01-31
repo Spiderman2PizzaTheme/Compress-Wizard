@@ -20,7 +20,7 @@ image_viewer_column = [
     [sg.Text("Choose an image from the list on the left.")],
     [sg.Text(size=(40,1), key="-TOUT-")], #Return debug text field
     [sg.Text("Convert to...")],
-    [sg.Combo(('PNG', 'JPEG', 'Compress for Discord', 'Deep Fried'), enable_events=True, key="-CONVERTCHOICE-", size=(20, 1)),],
+    [sg.Combo(('Compress for Discord', 'Deep Fried'), enable_events=True, key="-CONVERTCHOICE-", size=(20, 1)),],
     [sg.Button("CONVERT", key="-CONVERTERBUTTON-", disabled=True)],
     #[sg.Button('CONVERT', key="-CONVERTER-", disabled=True)],
 ]
@@ -87,37 +87,63 @@ while True:
         playsound('failure.wav')
         sg.Popup('Please select an output format')
         
-    if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'PNG':
+    #if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'PNG':
         #window["-TOUT-"].update("This worked")
-        im = Image.open(filename)
-        rgb_im = im.convert('RGB')     
-        rgb_im.save("NewPNG.png")
+        #im = Image.open(filename)
+        #rgb_im = im.convert('RGB')     
+        #rgb_im.save("NewPNG.png")
         
-        folder = values["-FOLDER-"]
-        try:
+        #folder = values["-FOLDER-"]
+       # try:
             #get list of files in folder
-            file_list = os.listdir(folder)
-        except:
-            file_list = []
+       #     file_list = os.listdir(folder)
+        #except:
+        #    file_list = []
             
-        fnames = [
-            f
-            for f in file_list
-            if os.path.isfile(os.path.join(folder, f))
-            and f.lower().endswith((".png", ".jpg", ".jpeg"))
-        ]
-        window["-FILE LIST-"].update(fnames)
+        #fnames = [
+        #    f
+        #    for f in file_list
+        #    if os.path.isfile(os.path.join(folder, f))
+        #    and f.lower().endswith((".png", ".jpg", ".jpeg"))
+        #]
+        #window["-FILE LIST-"].update(fnames)
         
-        cwd = os.getcwd()
-        playsound('success.wav')
-        sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
-        subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
+        #cwd = os.getcwd()
+        #playsound('success.wav')
+        #sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
+        #subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
         
-    if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'JPEG':
+    #if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'JPEG':
+        #window["-TOUT-"].update("This worked")
+        #im = Image.open(filename)
+        #rgb_im = im.convert('RGB')
+        #rgb_im.save("NewJPEG.jpg", quality=95)
+        
+        #folder = values["-FOLDER-"]
+        #try:
+            #get list of files in folder
+        #    file_list = os.listdir(folder)
+        #except:
+        #    file_list = []
+            
+        #fnames = [
+        #    f
+        #    for f in file_list
+        #    if os.path.isfile(os.path.join(folder, f))
+        #    and f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
+        #]
+        #window["-FILE LIST-"].update(fnames)
+        
+        #cwd = os.getcwd()
+        #playsound('success.wav')
+        #sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
+        #subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
+        
+    if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'Compress for Discord':
         #window["-TOUT-"].update("This worked")
         im = Image.open(filename)
         rgb_im = im.convert('RGB')
-        rgb_im.save("NewJPEG.jpg", quality=95)
+        rgb_im.save("DiscordCompressed.jpg", quality=25)
         
         folder = values["-FOLDER-"]
         try:
@@ -144,32 +170,6 @@ while True:
         im = Image.open(filename)
         rgb_im = im.convert('RGB')
         rgb_im.save("DeepFried.jpg", quality=3)
-        
-        folder = values["-FOLDER-"]
-        try:
-            #get list of files in folder
-            file_list = os.listdir(folder)
-        except:
-            file_list = []
-            
-        fnames = [
-            f
-            for f in file_list
-            if os.path.isfile(os.path.join(folder, f))
-            and f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
-        ]
-        window["-FILE LIST-"].update(fnames)
-        
-        cwd = os.getcwd()
-        playsound('success.wav')
-        sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
-        subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
-        
-    if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'Compress for Discord':
-        #window["-TOUT-"].update("This worked")
-        im = Image.open(filename)
-        rgb_im = im.convert('RGB')
-        rgb_im.save("DiscordCompressed.jpg", quality=25)
         
         folder = values["-FOLDER-"]
         try:
