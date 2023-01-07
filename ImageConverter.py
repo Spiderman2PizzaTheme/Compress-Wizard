@@ -1,11 +1,11 @@
 import PySimpleGUI as sg
 import os.path
 import subprocess
+import threading
 from pathlib import Path
 from PIL import Image
 from PIL import GifImagePlugin
 from playsound import playsound
-#import glob
 
 #---------------GUI LAYOUT---------------
 sg.theme('Default1')
@@ -22,7 +22,6 @@ image_viewer_column = [
     [sg.Text("Convert to...")],
     [sg.Combo(('Compress for Discord', 'Deep Fried'), enable_events=True, key="-CONVERTCHOICE-", size=(20, 1)),],
     [sg.Button("CONVERT", key="-CONVERTERBUTTON-", disabled=True)],
-    #[sg.Button('CONVERT', key="-CONVERTER-", disabled=True)],
 ]
 
 # FULL LAYOUT
@@ -42,19 +41,17 @@ halfSizeY = int(halfSizeYstr)
 window.TKroot.minsize(halfSizeX,halfSizeY)
 window.TKroot.maxsize(halfSizeX,halfSizeY)
 
-#---------------LOGIC---------------
+#-------------METHODS-------------
+def error_popup():
+    playsound('failure.wav')
+    
+def success_popup():
+    playsound('success.wav')
 
+#---------------LOGIC---------------
 # Event loop
 while True:    
     event, values = window.read()
-    #DEBUG TEXT
-    #choice = "choice"
-    #if choice == "choice":
-    #    try:
-    #        window["-TOUT-"].update(values["-CONVERTCHOICE-"])
-    #    except:
-    #        pass
-    #END DEBUG TEXT
 
     if event == "Exit" or event == sg.WIN_CLOSED:
         break
@@ -78,69 +75,17 @@ while True:
     if event == "-FILE LIST-": # a file was chosen from the list
         try:
             filename = os.path.join(values["-FOLDER-"], values["-FILE LIST-"][0])
-            #window["-TOUT-"].update("Convert image to JPEG?")
             window["-CONVERTERBUTTON-"].update(disabled=False)
         except:
             pass
 
     if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == '':
-        playsound('failure.wav')
+        threads = []
+        t = threading.Thread(target=error_popup)
+        t.start()
         sg.Popup('Please select an output format')
         
-    #if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'PNG':
-        #window["-TOUT-"].update("This worked")
-        #im = Image.open(filename)
-        #rgb_im = im.convert('RGB')     
-        #rgb_im.save("NewPNG.png")
-        
-        #folder = values["-FOLDER-"]
-       # try:
-            #get list of files in folder
-       #     file_list = os.listdir(folder)
-        #except:
-        #    file_list = []
-            
-        #fnames = [
-        #    f
-        #    for f in file_list
-        #    if os.path.isfile(os.path.join(folder, f))
-        #    and f.lower().endswith((".png", ".jpg", ".jpeg"))
-        #]
-        #window["-FILE LIST-"].update(fnames)
-        
-        #cwd = os.getcwd()
-        #playsound('success.wav')
-        #sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
-        #subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
-        
-    #if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'JPEG':
-        #window["-TOUT-"].update("This worked")
-        #im = Image.open(filename)
-        #rgb_im = im.convert('RGB')
-        #rgb_im.save("NewJPEG.jpg", quality=95)
-        
-        #folder = values["-FOLDER-"]
-        #try:
-            #get list of files in folder
-        #    file_list = os.listdir(folder)
-        #except:
-        #    file_list = []
-            
-        #fnames = [
-        #    f
-        #    for f in file_list
-        #    if os.path.isfile(os.path.join(folder, f))
-        #    and f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
-        #]
-        #window["-FILE LIST-"].update(fnames)
-        
-        #cwd = os.getcwd()
-        #playsound('success.wav')
-        #sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
-        #subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
-        
     if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'Compress for Discord':
-        #window["-TOUT-"].update("This worked")
         im = Image.open(filename)
         rgb_im = im.convert('RGB')
         rgb_im.save("DiscordCompressed.jpg", quality=25)
@@ -161,12 +106,13 @@ while True:
         window["-FILE LIST-"].update(fnames)
         
         cwd = os.getcwd()
-        playsound('success.wav')
+        threads = []
+        t = threading.Thread(target=success_popup)
+        t.start()
         sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
         subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
 
     if event == "-CONVERTERBUTTON-" and values["-CONVERTCHOICE-"] == 'Deep Fried':
-        #window["-TOUT-"].update("This worked")
         im = Image.open(filename)
         rgb_im = im.convert('RGB')
         rgb_im.save("DeepFried.jpg", quality=3)
@@ -187,7 +133,9 @@ while True:
         window["-FILE LIST-"].update(fnames)
         
         cwd = os.getcwd()
-        playsound('success.wav')
+        threads = []
+        t = threading.Thread(target=success_popup)
+        t.start()
         sg.Popup('Done!', 'Saved to: {0}'.format(cwd))
         subprocess.Popen(r'explorer /select, "{0}"'.format(cwd))
         
